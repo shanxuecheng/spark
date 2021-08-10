@@ -18,7 +18,7 @@
 package org.apache.spark.scheduler
 
 import java.nio.ByteBuffer
-import java.util.concurrent.{ExecutorService, RejectedExecutionException}
+import java.util.concurrent.{ExecutorService, LinkedBlockingQueue, RejectedExecutionException}
 
 import scala.language.existentials
 import scala.util.control.NonFatal
@@ -37,9 +37,12 @@ private[spark] class TaskResultGetter(sparkEnv: SparkEnv, scheduler: TaskSchedul
 
   private val THREADS = sparkEnv.conf.getInt("spark.resultGetter.threads", 4)
 
+  protected val taskResultGetterWorkQueue: LinkedBlockingQueue[Runnable] =
+    new LinkedBlockingQueue[Runnable]
+
   // Exposed for testing.
   protected val getTaskResultExecutor: ExecutorService =
-    ThreadUtils.newDaemonFixedThreadPool(THREADS, "task-result-getter")
+    ThreadUtils.newDaemonFixedThreadPool2(THREADS, "task-result-getter", taskResultGetterWorkQueue)
 
   // Exposed for testing.
   protected val serializer = new ThreadLocal[SerializerInstance] {
@@ -58,8 +61,10 @@ private[spark] class TaskResultGetter(sparkEnv: SparkEnv, scheduler: TaskSchedul
       taskSetManager: TaskSetManager,
       tid: Long,
       serializedData: ByteBuffer): Unit = {
+    logInfo(("Task result work queue size: %s").format(taskResultGetterWorkQueue.size()))
     getTaskResultExecutor.execute(new Runnable {
       override def run(): Unit = Utils.logUncaughtExceptions {
+        val start = System.currentTimeMillis()
         try {
           val (result, size) = serializer.get().deserialize[TaskResult[_]](serializedData) match {
             case directResult: DirectTaskResult[_] =>
@@ -120,6 +125,8 @@ private[spark] class TaskResultGetter(sparkEnv: SparkEnv, scheduler: TaskSchedul
             logError("Exception while getting task result", ex)
             taskSetManager.abort("Exception while getting task result: %s".format(ex))
         }
+        logInfo(("TID %s get result thread finish in %s ms ")
+          .format(tid, (System.currentTimeMillis() - start)))
       }
     })
   }

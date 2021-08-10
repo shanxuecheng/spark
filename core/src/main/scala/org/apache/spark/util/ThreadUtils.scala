@@ -83,6 +83,19 @@ private[spark] object ThreadUtils {
     Executors.newFixedThreadPool(nThreads, threadFactory).asInstanceOf[ThreadPoolExecutor]
   }
 
+  def newDaemonFixedThreadPool2(nThreads: Int, prefix: String
+                                , workQueue: LinkedBlockingQueue[Runnable]): ThreadPoolExecutor = {
+    val threadFactory = namedThreadFactory(prefix)
+    val threadPool = new ThreadPoolExecutor(
+      nThreads, // corePoolSize: the max number of threads to create before queuing the tasks
+      nThreads, // maximumPoolSize: because we use LinkedBlockingDeque, this one is not used
+      0,
+      TimeUnit.MILLISECONDS,
+      workQueue,
+      threadFactory)
+    threadPool
+  }
+
   /**
    * Wrapper over newSingleThreadExecutor.
    */

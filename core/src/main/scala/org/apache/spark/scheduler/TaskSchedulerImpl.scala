@@ -399,6 +399,7 @@ private[spark] class TaskSchedulerImpl private[scheduler](
   def statusUpdate(tid: Long, state: TaskState, serializedData: ByteBuffer) {
     var failedExecutor: Option[String] = None
     var reason: Option[ExecutorLossReason] = None
+    val start = System.currentTimeMillis()
     synchronized {
       try {
         taskIdToTaskSetManager.get(tid) match {
@@ -420,6 +421,8 @@ private[spark] class TaskSchedulerImpl private[scheduler](
               taskSet.removeRunningTask(tid)
               if (state == TaskState.FINISHED) {
                 taskResultGetter.enqueueSuccessfulTask(taskSet, tid, serializedData)
+                logInfo(("TID %s finished enqueue in % ms")
+                  .format(tid, (System.currentTimeMillis() - start)))
               } else if (Set(TaskState.FAILED, TaskState.KILLED, TaskState.LOST).contains(state)) {
                 taskResultGetter.enqueueFailedTask(taskSet, tid, state, serializedData)
               }
