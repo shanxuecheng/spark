@@ -421,7 +421,7 @@ private[spark] class TaskSchedulerImpl private[scheduler](
               taskSet.removeRunningTask(tid)
               if (state == TaskState.FINISHED) {
                 taskResultGetter.enqueueSuccessfulTask(taskSet, tid, serializedData)
-                logInfo(("TID %s finished enqueue in % ms")
+                logInfo(("TID %s finished enqueue in %s ms")
                   .format(tid, (System.currentTimeMillis() - start)))
               } else if (Set(TaskState.FAILED, TaskState.KILLED, TaskState.LOST).contains(state)) {
                 taskResultGetter.enqueueFailedTask(taskSet, tid, state, serializedData)
