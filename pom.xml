@@ -585,7 +585,7 @@
       <dependency>
         <groupId>io.netty</groupId>
         <artifactId>netty-all</artifactId>
-        <version>4.1.66.Final</version>
+        <version>4.0.43.Final</version>
       </dependency>
       <dependency>
         <groupId>io.netty</groupId>
@@ -2379,6 +2379,7 @@
               <include>org.eclipse.jetty:jetty-server</include>
               <include>com.google.guava:guava</include>
               <include>org.jboss.netty:netty</include>
+              <include>io.netty:netty-all</include>
             </includes>
           </artifactSet>
           <relocations>
@@ -2396,6 +2397,10 @@
             <relocation>
               <pattern>org.jboss.netty</pattern>
               <shadedPattern>${spark.shade.packageName}.jboss.netty</shadedPattern>
+            </relocation>
+            <relocation>
+              <pattern>org.netty</pattern>
+              <shadedPattern>${spark.shade.packageName}.netty</shadedPattern>
             </relocation>
           </relocations>
         </configuration>
