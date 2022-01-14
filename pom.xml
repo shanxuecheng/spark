@@ -609,8 +609,7 @@
       <dependency>
         <groupId>io.netty</groupId>
         <artifactId>netty-all</artifactId>
-        <version>4.0.43.Final</version>
-        <scope>provided</scope>
+        <version>4.1.61.Final</version>
       </dependency>
       <dependency>
         <groupId>io.netty</groupId>
@@ -2045,7 +2044,7 @@
             <useZincServer>true</useZincServer>
             <args>
               <arg>-unchecked</arg>
-              <arg>-deprecation</arg>
+<!--              <arg>-deprecation</arg>-->
               <arg>-feature</arg>
             </args>
             <jvmArgs>
@@ -2421,7 +2420,6 @@
               <include>org.eclipse.jetty:jetty-server</include>
               <include>com.google.guava:guava</include>
               <include>io.netty:netty</include>
-              <include>io.netty:netty-all</include>
             </includes>
           </artifactSet>
           <relocations>
@@ -2441,13 +2439,6 @@
               <shadedPattern>${spark.shade.packageName}.jboss.netty</shadedPattern>
               <includes>
                 <include>org.jboss.netty.**</include>
-              </includes>
-            </relocation>
-            <relocation>
-              <pattern>org.netty</pattern>
-              <shadedPattern>${spark.shade.packageName}.netty</shadedPattern>
-              <includes>
-                <include>org.netty.**</include>
               </includes>
             </relocation>
           </relocations>
