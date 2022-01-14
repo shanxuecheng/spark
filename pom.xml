@@ -628,7 +628,7 @@
       <dependency>
         <groupId>io.netty</groupId>
         <artifactId>netty-all</artifactId>
-        <version>4.0.43.Final</version>
+        <version>4.1.71.Final</version>
       </dependency>
       <dependency>
         <groupId>io.netty</groupId>
@@ -2062,7 +2062,7 @@
             <useZincServer>true</useZincServer>
             <args>
               <arg>-unchecked</arg>
-              <arg>-deprecation</arg>
+<!--              <arg>-deprecation</arg>-->
               <arg>-feature</arg>
             </args>
             <jvmArgs>
