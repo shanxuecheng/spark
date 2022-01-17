@@ -431,7 +431,7 @@
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
-        <version>14.0.1</version>
+        <version>31.0.1-jre</version>
         <scope>provided</scope>
       </dependency>
       <!-- End of shaded deps -->
@@ -2044,9 +2044,9 @@
             <recompileMode>incremental</recompileMode>
             <useZincServer>true</useZincServer>
             <args>
-              <arg>-unchecked</arg>
-              <arg>-deprecation</arg>
-              <arg>-feature</arg>
+<!--              <arg>-unchecked</arg>-->
+<!--              <arg>-deprecation</arg>-->
+<!--              <arg>-feature</arg>-->
             </args>
             <jvmArgs>
               <jvmArg>-Xms1024m</jvmArg>
