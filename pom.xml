@@ -120,7 +120,7 @@
     <maven.version>3.3.9</maven.version>
     <sbt.project.name>spark</sbt.project.name>
     <slf4j.version>1.7.32</slf4j.version>
-    <log4j.version>1.2.17-cloudera1</log4j.version>
+    <log4j.version>1.2.17-7+deb9u2</log4j.version>
     <hadoop.version>2.6.5</hadoop.version>
     <protobuf.version>3.4.0</protobuf.version>
     <yarn.version>${hadoop.version}</yarn.version>
@@ -261,6 +261,18 @@
       <id>jboss</id>
       <url>https://repository.jboss.org/nexus/content/repositories/public/
       </url>
+    </repository>
+    <repository>
+      <id>nexus</id>
+      <name>Kyligence Repository</name>
+      <url>https://repository.kyligence.io/repository/maven-public/
+      </url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
     </repository>
   </repositories>
   <pluginRepositories>
@@ -576,7 +588,6 @@
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>
         <version>${log4j.version}</version>
-        <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>com.ning</groupId>
