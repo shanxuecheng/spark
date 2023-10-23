@@ -143,7 +143,7 @@
     <derby.version>10.14.2.0</derby.version>
     <parquet.version>1.8.2</parquet.version>
     <hive.parquet.version>1.6.0</hive.parquet.version>
-    <jetty.version>9.3.30.v20211001</jetty.version>
+    <jetty.version>9.4.49.v20220914</jetty.version>
     <javaxservlet.version>3.1.0</javaxservlet.version>
     <chill.version>0.8.0</chill.version>
     <ivy.version>2.4.0</ivy.version>
@@ -266,11 +266,6 @@
       </url>
     </repository>
     <repository>
-      <id>jboss</id>
-      <url>https://repository.jboss.org/nexus/content/repositories/public/
-      </url>
-    </repository>
-    <repository>
       <id>nexus</id>
       <!-- for log4j 1.2.17-7+deb9u2,  build from https://salsa.debian.org/java-team/apache-log4j1.2 -->
       <name>Kyligence Repository</name>
@@ -287,7 +282,7 @@
     <repository>
       <id>kyoffice</id>
       <name>local private nexus</name>
-      <url>http://repo-ofs.kyligence.com:8081/repository/maven-public/</url>
+      <url>https://repo-ofs.kyligence.com/repository/maven-public/</url>
       <releases>
         <enabled>true</enabled>
       </releases>
