@@ -317,9 +317,20 @@ object CeilExpressionBuilder extends CeilFloorExpressionBuilderBase {
 }
 
 case class RoundCeil(child: Expression, scale: Expression)
-  extends RoundBase(child, scale, BigDecimal.RoundingMode.CEILING, "ROUND_CEILING") {
+  extends RoundBase(child, scale, BigDecimal.RoundingMode.CEILING, "ROUND_CEILING")
+    with ImplicitCastInputTypes {
 
   override def inputTypes: Seq[AbstractDataType] = Seq(DecimalType, IntegerType)
+
+  override lazy val dataType: DataType = child.dataType match {
+    case DecimalType.Fixed(p, s) =>
+      if (_scale < 0) {
+        DecimalType(math.max(p, 1 - _scale), 0)
+      } else {
+        DecimalType(p, math.min(s, _scale))
+      }
+    case t => t
+  }
 
   override def nodeName: String = "ceil"
 
@@ -552,9 +563,20 @@ object FloorExpressionBuilder extends CeilFloorExpressionBuilderBase {
 }
 
 case class RoundFloor(child: Expression, scale: Expression)
-  extends RoundBase(child, scale, BigDecimal.RoundingMode.FLOOR, "ROUND_FLOOR") {
+  extends RoundBase(child, scale, BigDecimal.RoundingMode.FLOOR, "ROUND_FLOOR")
+    with ImplicitCastInputTypes {
 
   override def inputTypes: Seq[AbstractDataType] = Seq(DecimalType, IntegerType)
+
+  override lazy val dataType: DataType = child.dataType match {
+    case DecimalType.Fixed(p, s) =>
+      if (_scale < 0) {
+        DecimalType(math.max(p, 1 - _scale), 0)
+      } else {
+        DecimalType(p, math.min(s, _scale))
+      }
+    case t => t
+  }
 
   override def nodeName: String = "floor"
 
@@ -1425,21 +1447,9 @@ abstract class RoundBase(child: Expression, scale: Expression,
   override def foldable: Boolean = child.foldable
 
   override lazy val dataType: DataType = child.dataType match {
-    case DecimalType.Fixed(p, s) =>
-      // After rounding we may need one more digit in the integral part,
-      // e.g. `ceil(9.9, 0)` -> `10`, `ceil(99, -1)` -> `100`.
-      val integralLeastNumDigits = p - s + 1
-      if (_scale < 0) {
-        // negative scale means we need to adjust `-scale` number of digits before the decimal
-        // point, which means we need at lease `-scale + 1` digits (after rounding).
-        val newPrecision = math.max(integralLeastNumDigits, -_scale + 1)
-        // We have to accept the risk of overflow as we can't exceed the max precision.
-        DecimalType(math.min(newPrecision, DecimalType.MAX_PRECISION), 0)
-      } else {
-        val newScale = math.min(s, _scale)
-        // We have to accept the risk of overflow as we can't exceed the max precision.
-        DecimalType(math.min(integralLeastNumDigits + newScale, 38), newScale)
-      }
+    // if the new scale is bigger which means we are scaling up,
+    // keep the original scale as `Decimal` does
+    case DecimalType.Fixed(p, s) => DecimalType(p, if (_scale > s) s else _scale)
     case t => t
   }
 
@@ -1606,14 +1616,13 @@ abstract class RoundBase(child: Expression, scale: Expression,
     Examples:
       > SELECT _FUNC_(2.5, 0);
        3
-      > SELECT _FUNC_(25, -1);
-       30
   """,
   since = "1.5.0",
   group = "math_funcs")
 // scalastyle:on line.size.limit
 case class Round(child: Expression, scale: Expression)
-  extends RoundBase(child, scale, BigDecimal.RoundingMode.HALF_UP, "ROUND_HALF_UP") {
+  extends RoundBase(child, scale, BigDecimal.RoundingMode.HALF_UP, "ROUND_HALF_UP")
+    with Serializable with ImplicitCastInputTypes {
   def this(child: Expression) = this(child, Literal(0))
   override protected def withNewChildrenInternal(newLeft: Expression, newRight: Expression): Round =
     copy(child = newLeft, scale = newRight)
@@ -1631,14 +1640,13 @@ case class Round(child: Expression, scale: Expression)
     Examples:
       > SELECT _FUNC_(2.5, 0);
        2
-      > SELECT _FUNC_(25, -1);
-       20
   """,
   since = "2.0.0",
   group = "math_funcs")
 // scalastyle:on line.size.limit
 case class BRound(child: Expression, scale: Expression)
-  extends RoundBase(child, scale, BigDecimal.RoundingMode.HALF_EVEN, "ROUND_HALF_EVEN") {
+  extends RoundBase(child, scale, BigDecimal.RoundingMode.HALF_EVEN, "ROUND_HALF_EVEN")
+    with Serializable with ImplicitCastInputTypes {
   def this(child: Expression) = this(child, Literal(0))
   override protected def withNewChildrenInternal(
     newLeft: Expression, newRight: Expression): BRound = copy(child = newLeft, scale = newRight)
