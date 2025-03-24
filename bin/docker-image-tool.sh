@@ -111,6 +111,11 @@ function create_dev_build_context {(
     cp -r "$other" "$BASE_CTX/$other"
   done
 
+  cp "gluten.jar" "$BASE_CTX/gluten.jar"
+  cp "libch.so" "$BASE_CTX/libch.so"
+  cp "delta-core_2.12-2.3.0.jar" "$BASE_CTX/delta-core_2.12-2.3.0.jar"
+  cp "delta-storage-2.3.0.jar" "$BASE_CTX/delta-storage-2.3.0.jar"
+
   local PYSPARK_CTX="$CTX_DIR/pyspark"
   mkdir -p "$PYSPARK_CTX/kubernetes"
   cp -r "resource-managers/kubernetes/docker/src/main/dockerfiles" \

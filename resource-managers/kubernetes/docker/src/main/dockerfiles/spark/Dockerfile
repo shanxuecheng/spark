@@ -16,7 +16,7 @@
 #
 ARG java_image_tag=8-jdk-slim
 
-FROM openjdk:${java_image_tag}
+FROM harbor-ofs.kyligence.com/library/openjdk:${java_image_tag}
 
 ARG spark_uid=root
 
@@ -61,6 +61,10 @@ COPY examples /opt/spark/examples
 COPY kubernetes/tests /opt/spark/tests
 COPY data /opt/spark/data
 COPY hive_1_2_2 /opt/spark/hive_1_2_2
+COPY gluten.jar /opt/spark/jars/
+COPY libch.so /opt/spark/work-dir/
+COPY delta-core_2.12-2.3.0.jar /opt/spark/jars/
+COPY delta-storage-2.3.0.jar /opt/spark/jars/
 
 ENV SPARK_HOME /opt/spark
 
