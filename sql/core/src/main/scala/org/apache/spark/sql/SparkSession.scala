@@ -1107,6 +1107,7 @@ object SparkSession extends Logging {
         setDefaultSession(session)
         setActiveSession(session)
         registerContextListener(sparkContext)
+        extraInit()
       }
 
       return session
@@ -1258,6 +1259,11 @@ object SparkSession extends Logging {
       })
       newSession
     }
+  }
+
+  /** Do extra init */
+  def extraInit(): Unit = {
+    SQLExecution.startOutdatedBroadcastCleaner()
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////
