@@ -244,6 +244,8 @@ private[spark] class HadoopDelegationTokenManager(
       require(new File(keytab).isFile(), s"Cannot find keytab at $keytab.")
       val ugi = UserGroupInformation.loginUserFromKeytabAndReturnUGI(principal, keytab)
       logInfo("Successfully logged into KDC.")
+      UserGroupInformation.loginUserFromKeytab(principal, keytab)
+      logInfo("Successfully invoked UserGroupInformation.loginUserFromKeytab.")
       ugi
     } else if (!SparkHadoopUtil.get.isProxyUser(UserGroupInformation.getCurrentUser())) {
       logInfo(s"Attempting to load user's ticket cache.")
