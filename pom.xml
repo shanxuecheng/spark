@@ -121,7 +121,7 @@
     <sbt.project.name>spark</sbt.project.name>
     <asm.version>9.5</asm.version>
     <slf4j.version>2.0.7</slf4j.version>
-    <log4j.version>2.20.0</log4j.version>
+    <log4j.version>2.25.4</log4j.version>
     <!-- make sure to update IsolatedClientLoader whenever this version is changed -->
     <hadoop.version>3.3.4</hadoop.version>
     <!-- SPARK-41247: When updating `protobuf.version`, also need to update `protoVersion` in `SparkBuild.scala` -->
@@ -129,7 +129,7 @@
     <protoc-jar-maven-plugin.version>3.11.4</protoc-jar-maven-plugin.version>
     <yarn.version>${hadoop.version}</yarn.version>
     <zookeeper.version>3.6.3</zookeeper.version>
-    <curator.version>2.13.0</curator.version>
+    <curator.version>4.2.0</curator.version>
     <hive.group>org.apache.hive</hive.group>
     <hive.classifier>core</hive.classifier>
     <!-- Version used in Maven Hive dependency -->
@@ -222,8 +222,6 @@
     <commons-cli.version>1.5.0</commons-cli.version>
     <bouncycastle.version>1.77</bouncycastle.version>
     <tink.version>1.9.0</tink.version>
-    <tomcat.version>9.0.98</tomcat.version>
-    <tomcat-embed-core.version>9.0.98</tomcat-embed-core.version>
     <netty.version>4.1.96.Final</netty.version>
     <netty-handler.version>4.1.118.Final</netty-handler.version>
     <!--
@@ -2729,16 +2727,6 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>org.apache.tomcat.embed</groupId>
-        <artifactId>tomcat-embed-core</artifactId>
-        <version>${tomcat-embed-core.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.tomcat</groupId>
-        <artifactId>tomcat-annotations-api</artifactId>
-        <version>${tomcat.version}</version>
-      </dependency>
-      <dependency>
         <groupId>org.apache.thrift</groupId>
         <artifactId>libfb303</artifactId>
         <version>0.9.3</version>
@@ -2855,6 +2843,16 @@
         <groupId>com.squareup.okio</groupId>
         <artifactId>okio</artifactId>
         <version>${okio.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.xml.bind</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <version>2.3.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.jaxb</groupId>
+        <artifactId>jaxb-runtime</artifactId>
+        <version>2.3.7</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -3564,16 +3562,16 @@
   </build>
 
   <distributionManagement>
-    <snapshotRepository>
-      <id>user-snapshots</id>
-      <name>User Project SNAPSHOTS</name>
-      <url>https://repository.kyligence.io/repository/maven-snapshots/</url>
-    </snapshotRepository>
     <repository>
-      <id>user-releases</id>
-      <name>User Project Release</name>
-      <url>https://repository.kyligence.io/repository/maven-releases/</url>
+      <id>${repository.id}</id>
+      <url>${repository.url}</url>
+      <name>${repository.name}</name>
     </repository>
+    <snapshotRepository>
+      <id>${repository.id.snapshots}</id>
+      <url>${repository.url.snapshots}</url>
+      <name>${repository.name.snapshots}</name>
+    </snapshotRepository>
   </distributionManagement>
 
   <profiles>
