@@ -583,7 +583,7 @@ private[spark] class TaskSetManager(
       sched.taskSetFinished(this)
       if (tasksSuccessful == numTasks) {
         val broadcastId = taskSet.tasks.head match {
-          case resultTask: ResultTask[Any, Any] =>
+          case resultTask: ResultTask[_, _] =>
             if (resultTask.taskBinary != null) {
               Some(resultTask.taskBinary.id)
             } else {
