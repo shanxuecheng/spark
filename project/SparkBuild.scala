@@ -1105,6 +1105,9 @@ object DependencyOverrides {
     dependencyOverrides += "jline" % "jline" % "2.14.6",
     dependencyOverrides += "org.apache.avro" % "avro" % "1.11.4",
     dependencyOverrides += "org.apache.commons" % "commons-compress" % "1.23.0")
+    dependencyOverrides += "com.fasterxml.jackson.core" % "jackson-databind" % "2.15.2",
+    dependencyOverrides += "com.fasterxml.jackson.core" % "jackson-core" % "2.15.2",
+    dependencyOverrides += "com.fasterxml.jackson.core" % "jackson-annotations" % "2.15.2")
 }
 
 /**

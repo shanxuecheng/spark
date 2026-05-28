@@ -877,7 +877,7 @@ private[spark] object JsonProtocol extends JsonUtils {
       case other =>
         val otherClass = Utils.classForName(other)
         if (classOf[SparkListenerEvent].isAssignableFrom(otherClass)) {
-          mapper.readValue(json.toString, otherClass)
+          mapper.readValue(compact(render(json)), otherClass)
             .asInstanceOf[SparkListenerEvent]
         } else {
           throw new SparkException(s"Unknown event type: $other")
