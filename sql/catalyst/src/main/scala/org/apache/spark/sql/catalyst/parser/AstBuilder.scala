@@ -5020,28 +5020,14 @@ class AstBuilder extends DataTypeAstBuilder with SQLConfHelper with Logging {
    * Create a TimestampAdd expression.
    */
   override def visitTimestampadd(ctx: TimestampaddContext): Expression = withOrigin(ctx) {
-    if (ctx.invalidUnit != null) {
-      throw QueryParsingErrors.invalidDatetimeUnitError(
-        ctx,
-        ctx.name.getText,
-        ctx.invalidUnit.getText)
-    } else {
-      TimestampAdd(ctx.unit.getText, expression(ctx.unitsAmount), expression(ctx.timestamp))
-    }
+    TimestampAdd(ctx.unit.getText, expression(ctx.unitsAmount), expression(ctx.timestamp))
   }
 
   /**
    * Create a TimestampDiff expression.
    */
   override def visitTimestampdiff(ctx: TimestampdiffContext): Expression = withOrigin(ctx) {
-    if (ctx.invalidUnit != null) {
-      throw QueryParsingErrors.invalidDatetimeUnitError(
-        ctx,
-        ctx.name.getText,
-        ctx.invalidUnit.getText)
-    } else {
-      TimestampDiff(ctx.unit.getText, expression(ctx.startTimestamp), expression(ctx.endTimestamp))
-    }
+    TimestampDiff(ctx.unit.getText, expression(ctx.startTimestamp), expression(ctx.endTimestamp))
   }
 
   /**
