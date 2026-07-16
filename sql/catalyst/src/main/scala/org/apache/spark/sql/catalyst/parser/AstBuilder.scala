@@ -5049,11 +5049,7 @@ class AstBuilder extends DataTypeAstBuilder with SQLConfHelper with Logging {
 
   override def visitDropLogicalView(ctx: DropLogicalViewContext): AnyRef = withOrigin(ctx) {
     DropView(
-      createUnresolvedView(
-        ctx.identifierReference(),
-        commandName = "DROP VIEW",
-        allowTemp = true,
-        relationTypeMismatchHint = Some("Please use DROP TABLE instead.")),
+      withIdentClause(ctx.identifierReference, UnresolvedIdentifier(_, allowTemp = true)),
       ctx.EXISTS != null)
   }
 }
