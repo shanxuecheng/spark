@@ -42,6 +42,10 @@ public class JavaModuleOptions {
       "--add-opens=java.base/sun.security.action=ALL-UNNAMED",
       "--add-opens=java.base/sun.util.calendar=ALL-UNNAMED",
       "--add-opens=java.security.jgss/sun.security.krb5=ALL-UNNAMED",
+      "--add-opens=java.security.jgss/sun.security.krb5.internal=ALL-UNNAMED",
+      "--add-opens=java.security.jgss/sun.security.krb5.internal.ccache=ALL-UNNAMED",
+      "--add-opens=java.security.jgss/sun.security.krb5.internal.ktab=ALL-UNNAMED",
+      "-Djdk.lang.processReaperUseDefaultStackSize=true",
       "-Djdk.reflect.useDirectMethodHandle=false"};
 
     /**
